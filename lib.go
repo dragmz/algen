@@ -10,6 +10,7 @@ import (
 type GenerateArgs struct {
 	StartsWith string
 	EndsWith   string
+	Contains   string
 }
 
 func accept(a crypto.Account, args GenerateArgs) bool {
@@ -21,6 +22,12 @@ func accept(a crypto.Account, args GenerateArgs) bool {
 
 	if args.EndsWith != "" {
 		if !strings.HasSuffix(a.Address.String(), args.EndsWith) {
+			return false
+		}
+	}
+
+	if args.Contains != "" {
+		if !strings.Contains(a.Address.String(), args.Contains) {
 			return false
 		}
 	}
