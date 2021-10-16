@@ -70,7 +70,7 @@ func main() {
 			a, err := algen.GenerateAddress(algen.GenerateArgs{
 				StartsWith: strings.ToUpper(startsWith),
 				EndsWith:   strings.ToUpper(endsWith),
-				Contains:   strings.ToUpper(contains),
+				Contains:   strings.Split(strings.ToUpper(contains), ","),
 			})
 
 			if err != nil {

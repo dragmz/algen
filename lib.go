@@ -10,7 +10,7 @@ import (
 type GenerateArgs struct {
 	StartsWith string
 	EndsWith   string
-	Contains   string
+	Contains   []string
 }
 
 func accept(a crypto.Account, args GenerateArgs) bool {
@@ -26,10 +26,15 @@ func accept(a crypto.Account, args GenerateArgs) bool {
 		}
 	}
 
-	if args.Contains != "" {
-		if !strings.Contains(a.Address.String(), args.Contains) {
+	last := -1
+	addr := a.Address.String()
+
+	for _, item := range args.Contains {
+		delta := strings.Index(addr[last+1:], item)
+		if delta == -1 {
 			return false
 		}
+		last = last + delta + len(item)
 	}
 
 	return true
@@ -57,6 +62,7 @@ func GenerateAddress(args GenerateArgs) (crypto.Account, error) {
 	}
 
 	a := <-ch
+
 	close(done)
 
 	return a, nil
